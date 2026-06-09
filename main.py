@@ -1,11 +1,12 @@
-import pygame
 from random import randint
+
+import pygame
 
 SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480
 CELL_SIZE = 20
-GRID_WIDTH = SCREEN_WIDTH // CELL_SIZE   
-GRID_HEIGHT = SCREEN_HEIGHT // CELL_SIZE  
+GRID_WIDTH = SCREEN_WIDTH // CELL_SIZE
+GRID_HEIGHT = SCREEN_HEIGHT // CELL_SIZE
 CENTER = (SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2)
 
 BLACK = (0, 0, 0)
@@ -20,16 +21,18 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Змейка')
 
-class GameObject:
-    def __init__(self, position=CENTER, body_color=None):
-        """Базовый класс для всех игровых объектов."""
 
+class GameObject:
+    """Базовый класс для всех игровых объектов."""
+    
+    def __init__(self, position=CENTER, body_color=None):
         self.position = position
         self.body_color = body_color
 
     def draw(self):
         """Отрисовывает объект на игровом поле."""
         pass
+
 
 class Apple(GameObject):
     """Класс яблока."""
@@ -48,8 +51,10 @@ class Apple(GameObject):
         """Отрисовывает яблоко на игровом поле."""
         pygame.draw.rect(screen, self.body_color, (*self.position, CELL_SIZE, CELL_SIZE))
 
+
 class Snake(GameObject):
     """Класс змейки."""
+
     def __init__(self):
         """Инициализирует змейку."""
         super().__init__(body_color=GREEN)  
@@ -86,7 +91,7 @@ class Snake(GameObject):
         dx, dy = self.direction
         new_head = ((x + dx * CELL_SIZE) % SCREEN_WIDTH, 
                     (y + dy * CELL_SIZE) % SCREEN_HEIGHT)
-        if  new_head in self.positions:  
+        if new_head in self.positions:  
             self.reset()
         else: 
             self.positions.insert(0, new_head)  
@@ -100,10 +105,10 @@ class Snake(GameObject):
         if new_direction != opposite_directions.get(self.direction):
             self.next_direction = new_direction
 
+
 def main():
     """Основной игровой цикл."""
     clock = pygame.time.Clock()
-    
     snake = Snake()
     apple = Apple()
     
@@ -132,6 +137,7 @@ def main():
         snake.draw()
         apple.draw()
         pygame.display.update()
+
 
 if __name__ == '__main__':
     main()
