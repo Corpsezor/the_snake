@@ -4,7 +4,6 @@ from random import randint
 
 import pygame
 
-
 SCREEN_WIDTH = 640
 SCREEN_HEIGHT = 480
 CELL_SIZE = 20
@@ -21,9 +20,19 @@ LEFT = (-1, 0)
 UP = (0, -1)
 DOWN = (0, 1)
 
-pygame.init()
-screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption('Змейка')
+screen = None
+
+
+def init_screen():
+    """Инициализирует окно pygame при первом использовании."""
+    global screen
+
+    if screen is None:
+        pygame.init()
+        screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        pygame.display.set_caption('Змейка')
+
+    return screen
 
 
 class GameObject:
@@ -56,7 +65,7 @@ class Apple(GameObject):
     def draw(self):
         """Отрисовывает яблоко на игровом поле."""
         rect = (*self.position, CELL_SIZE, CELL_SIZE)
-        pygame.draw.rect(screen, self.body_color, rect)
+        pygame.draw.rect(init_screen(), self.body_color, rect)
 
 
 class Snake(GameObject):
@@ -86,7 +95,7 @@ class Snake(GameObject):
         """Отрисовывает змейку на игровом поле."""
         for position in self.positions:
             rect = (*position, CELL_SIZE, CELL_SIZE)
-            pygame.draw.rect(screen, self.body_color, rect)
+            pygame.draw.rect(init_screen(), self.body_color, rect)
 
     def move(self):
         """Перемещает змейку в текущем направлении."""
@@ -144,6 +153,7 @@ def handle_keys(snake):
 
 def main():
     """Запускает основной игровой цикл."""
+    init_screen()
     clock = pygame.time.Clock()
     snake = Snake()
     apple = Apple()
