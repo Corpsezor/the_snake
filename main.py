@@ -166,31 +166,4 @@ def main():
 
 if __name__ == '__main__':
     main()
-PY
 
-cp main.py the_snake/main.py
-cp main.py pygame_practice/main.py
-
-cat > the_snake/__init__.py <<'PY'
-"""Модуль игры «Змейка»."""
-
-from . import main as snake_main
-
-Apple = snake_main.Apple
-BOARD_BACKGROUND_COLOR = snake_main.BOARD_BACKGROUND_COLOR
-DOWN = snake_main.DOWN
-GRID_HEIGHT = snake_main.GRID_HEIGHT
-GRID_SIZE = snake_main.GRID_SIZE
-GRID_WIDTH = snake_main.GRID_WIDTH
-GameObject = snake_main.GameObject
-LEFT = snake_main.LEFT
-RIGHT = snake_main.RIGHT
-SCREEN_HEIGHT = snake_main.SCREEN_HEIGHT
-SCREEN_WIDTH = snake_main.SCREEN_WIDTH
-Snake = snake_main.Snake
-UP = snake_main.UP
-clock = snake_main.clock
-handle_keys = snake_main.handle_keys
-main = snake_main.main
-screen = snake_main.screen
-PY
