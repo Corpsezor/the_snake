@@ -38,22 +38,25 @@ class GameObject:
 
     def draw(self):
         """Отрисовывает объект на игровом поле."""
-        pass
 
 
 class Apple(GameObject):
     """Класс яблока."""
 
-    def __init__(self):
+    def __init__(self, occupied_positions):
         """Инициализирует яблоко."""
         super().__init__(body_color=RED)
+        self.occupied_positions = occupied_positions
         self.randomize_position()
 
     def randomize_position(self):
         """Устанавливает случайную позицию яблока."""
-        x_position = randint(0, GRID_WIDTH - 1) * GRID_SIZE
-        y_position = randint(0, GRID_HEIGHT - 1) * GRID_SIZE
-        self.position = (x_position, y_position)
+        while True:
+            x_position = randint(0, GRID_WIDTH - 1) * GRID_SIZE
+            y_position = randint(0, GRID_HEIGHT - 1) * GRID_SIZE
+            self.position = (x_position, y_position)
+            if self.position not in self.occupied_positions:
+                break
 
     def draw(self):
         """Отрисовывает яблоко на игровом поле."""
@@ -104,10 +107,6 @@ class Snake(GameObject):
             (y_position + dy_position * GRID_SIZE) % SCREEN_HEIGHT,
         )
 
-        if new_head in self.positions:
-            self.reset()
-            return
-
         self.positions.insert(0, new_head)
 
         if len(self.positions) > self.length:
@@ -147,7 +146,7 @@ def handle_keys(snake):
 def main():
     """Запускает основной игровой цикл."""
     snake = Snake()
-    apple = Apple()
+    apple = Apple(snake.positions)
 
     while True:
         clock.tick(20)
@@ -157,6 +156,8 @@ def main():
         if snake.get_head_position() == apple.position:
             snake.length += 1
             apple.randomize_position()
+        elif snake.get_head_position() in snake.positions[1:]:
+            snake.reset()
 
         screen.fill(BOARD_BACKGROUND_COLOR)
         snake.draw()
